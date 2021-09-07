@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/back"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="640dp"
+        android:layout_marginTop="91dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="407dp"
+            android:layout_gravity="bottom">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/why"
+                android:scaleType="fitStart"
+                app:srcCompat="@drawable/glooty"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="4dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom">
+
+            <Button
+                android:id="@+id/butt1"
+                android:layout_width="270dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:backgroundTint="#06A801"
+                android:gravity="center"
+                android:text="@string/yes"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_layout3"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom">
+
+            <Button
+                android:id="@+id/butt2"
+                android:layout_width="270dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:backgroundTint="#A80101"
+                android:gravity="center"
+                android:text="@string/no"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">First app</string>
+    <string name="give_loot">Give loot</string>
+    <string name="marzell">Marzell</string>
+    <string name="todo">TODO</string>
+    <string name="red_sky_company_presents">Red Sky Company presents</string>
+    <string name="loading_complete">Loading complete</string>
+    <string name="why">Why</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+</resources>
