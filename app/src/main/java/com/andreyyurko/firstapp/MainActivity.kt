@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         
         val button1: Button = findViewById(R.id.butt1)
         val button2: Button = findViewById(R.id.butt2)
+        var flag1: Boolean = true
         // альтернативный вариант
         // val imageButton = findViewById<ImageButton>(R.id.imageButton)
         // или val imageButton = findViewById(R.id.imageButton) as ImageButton
