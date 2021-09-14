@@ -2,12 +2,9 @@ package com.andreyyurko.firstapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.DividerItemDecoration
-
-
-
 
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -17,7 +14,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val adapter = UserAdapter()
         recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(DividerItemDecoration(this@MainActivity, LinearLayoutManager.VERTICAL))
+        val dividerItemDecoration = DividerItemDecoration(this@MainActivity, RecyclerView.VERTICAL)
+        val divider_image = resources.getDrawable(R.drawable.divider, theme)
+        dividerItemDecoration.setDrawable(divider_image)
+        recyclerView.addItemDecoration(CustomPositionItemDecoration(divider_image))
         adapter.userList = loadUsers()
         adapter.notifyDataSetChanged()
     }
