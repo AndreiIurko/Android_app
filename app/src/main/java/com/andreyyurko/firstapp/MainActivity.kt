@@ -1,27 +1,78 @@
 package com.andreyyurko.firstapp
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.Button
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
 
 
-class MainActivity : AppCompatActivity() {
-    @SuppressLint("SetTextI18n")
+
+
+
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val button1: Button = findViewById(R.id.butt1)
-        val button2: Button = findViewById(R.id.butt2)
-        // альтернативный вариант
-        // val imageButton = findViewById<ImageButton>(R.id.imageButton)
-        // или val imageButton = findViewById(R.id.imageButton) as ImageButton
-
-        button1.setOnClickListener {
-            button1.text = "50/50, final offer!"
-        }
-        button2.setOnClickListener {
-            button2.text = "No, i'll pass"
-        }
+        val recyclerView = findViewById<RecyclerView>(R.id.usersRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val adapter = UserAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(DividerItemDecoration(this@MainActivity, LinearLayoutManager.VERTICAL))
+        adapter.userList = loadUsers()
+        adapter.notifyDataSetChanged()
+    }
+    private fun loadUsers() : List<User> {
+        return listOf(
+            User(
+                avatarUrl = "",
+                userName = "User name 1",
+                groupName = "A"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 2",
+                groupName = "B"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 3",
+                groupName = "C"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 4",
+                groupName = "A"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 5",
+                groupName = "B"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 6",
+                groupName = "C"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 7",
+                groupName = "A"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 8",
+                groupName = "B"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 9",
+                groupName = "C"
+            ),
+            User(
+                avatarUrl = "",
+                userName = "User name 10",
+                groupName = "A"
+            ),
+        )
     }
 }

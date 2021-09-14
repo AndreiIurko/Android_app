@@ -5,8 +5,11 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21354166666666666" />
         <entry key="app/src/main/res/drawable/my_image.xml" value="0.19010416666666666" />
-        <entry key="app/src/main/res/layout/activity_loading.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20125786163522014" />
+        <entry key="app/src/main/res/layout/activity_loading.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/driver_drawable.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/layout/item.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/layout/item_user.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.32222222222222224" />
       </map>
     </option>
