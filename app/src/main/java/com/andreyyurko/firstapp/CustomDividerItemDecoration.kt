@@ -7,7 +7,7 @@ import android.view.View
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomPositionItemDecoration(private val dividerDrawable: Drawable) :
+class CustomDividerItemDecoration(private val dividerDrawable: Drawable) :
     RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(rect: Rect, view: View, parent: RecyclerView, s: RecyclerView.State) {

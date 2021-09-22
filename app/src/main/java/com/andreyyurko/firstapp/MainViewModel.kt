@@ -1,9 +1,13 @@
 package com.andreyyurko.firstapp
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -16,18 +20,20 @@ class MainViewModel : ViewModel() {
         object Loading : ViewState()
         data class Data(val userList: List<User>) : ViewState()
     }
-    var viewState: ViewState = ViewState.Loading
+    private val _viewState = MutableStateFlow<ViewState>(ViewState.Loading)
+    val viewState: Flow<ViewState> get() = _viewState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            viewState = ViewState.Loading
+            _viewState.emit(ViewState.Loading)
             val users = loadUsers()
-            viewState = ViewState.Data(users)
+            _viewState.emit(ViewState.Data(users))
         }
     }
 
     private suspend fun loadUsers() : List<User> {
         return withContext(Dispatchers.IO) {
+            Log.d(MainActivity.LOG_TAG, "loadUsers()")
             Thread.sleep(3000)
             provideApi().getUsers().data
         }
