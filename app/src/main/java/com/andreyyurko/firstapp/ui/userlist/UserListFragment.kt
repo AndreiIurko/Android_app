@@ -9,12 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.andreyyurko.firstapp.R
+import com.andreyyurko.firstapp.databinding.FragmentUserListBinding
+import com.andreyyurko.firstapp.ui.base.BaseFragment
+import com.google.android.exoplayer2.util.Log
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import com.andreyyurko.firstapp.databinding.FragmentUserListBinding
-import com.google.android.exoplayer2.util.Log
 
 
 class UserListFragment : BaseFragment(R.layout.fragment_user_list) {

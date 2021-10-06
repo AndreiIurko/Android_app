@@ -20,10 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-=======
-
->>>>>>> feature/23-add-onboarding-fragment
-    </application>
+</application>
 
 </manifest>

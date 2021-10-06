@@ -2,8 +2,8 @@ package com.andreyyurko.firstapp.ui.userlist
 
 import androidx.lifecycle.viewModelScope
 import com.andreyyurko.firstapp.Api
-import com.andreyyurko.firstapp.ui.base.BaseViewModel
 import com.andreyyurko.firstapp.entity.User
+import com.andreyyurko.firstapp.ui.base.BaseViewModel
 import com.google.android.exoplayer2.util.Log
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers

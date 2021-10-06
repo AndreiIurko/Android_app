@@ -6,9 +6,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.andreyyurko.firstapp.R
 import com.andreyyurko.firstapp.databinding.FragmentOnboardingBinding
+import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -24,7 +24,7 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
     private val viewBinding by viewBinding(FragmentOnboardingBinding::bind)
 
     private var player: ExoPlayer? = null
-    private var volume: Boolean = true
+    private var isVolumeOn: Boolean = true
 
     private var page: Int = 0
     private var isScroll = false
@@ -112,14 +112,14 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
     }
 
     private fun changeVolume() {
-        if (volume) {
+        if (isVolumeOn) {
             player?.volume = 0F
-            volume = false
+            isVolumeOn = false
             viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_up_white_24dp)
         }
         else {
             player?.volume = 1F
-            volume = true
+            isVolumeOn = true
             viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_off_white_24dp)
         }
     }
