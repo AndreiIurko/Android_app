@@ -7,7 +7,7 @@ import com.andreyyurko.firstapp.databinding.FragmentSignInBinding
 
 class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
-    private val viewBinding by viewBinding(FragmentSignInBinding::bind)
+    //private val viewBinding by viewBinding(FragmentSignInBinding::bind)
 
     private val viewModel: SignInViewModel by viewModels()
 }

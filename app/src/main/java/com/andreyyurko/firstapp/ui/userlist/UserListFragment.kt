@@ -1,6 +1,5 @@
 package com.andreyyurko.firstapp.ui.userlist
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -76,7 +75,7 @@ class UserListFragment : BaseFragment(R.layout.fragment_user_list) {
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val adapter = UserAdapter()
         recyclerView.adapter = adapter
-        val dividerImage = context?.getResources()?.getDrawable(R.drawable.divider);
+        val dividerImage = resources.getDrawable(R.drawable.divider_vertical, context?.theme)
         dividerImage?.let { CustomDividerItemDecoration(it) }?.let {
             recyclerView.addItemDecoration(
                 it

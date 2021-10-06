@@ -7,7 +7,7 @@ import com.andreyyurko.firstapp.databinding.FragmentEmailConfirmationBinding
 import com.andreyyurko.firstapp.ui.signin.SignInViewModel
 
 class EmailConfirmationFragment : BaseFragment(R.layout.fragment_email_confirmation) {
-    private val viewBinding by viewBinding(FragmentEmailConfirmationBinding::bind)
+    //private val viewBinding by viewBinding(FragmentEmailConfirmationBinding::bind)
 
     private val viewModel: SignInViewModel by viewModels()
 }
