@@ -1,4 +1,4 @@
-package com.andreyyurko.firstapp
+package com.andreyyurko.firstapp.ui.onboarding
 
 import com.andreyyurko.firstapp.databinding.ItemOnboardingTextBinding
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding

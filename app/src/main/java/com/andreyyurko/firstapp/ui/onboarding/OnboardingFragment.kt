@@ -9,7 +9,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.andreyyurko.firstapp.R
 import com.andreyyurko.firstapp.databinding.FragmentOnboardingBinding
-import com.andreyyurko.firstapp.onboardingTextAdapterDelegate
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
