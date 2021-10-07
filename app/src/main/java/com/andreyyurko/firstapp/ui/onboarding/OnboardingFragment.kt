@@ -34,7 +34,7 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        timer()
+        initTimer()
         initPlayer()
 
         viewBinding.volumeControlButton.setOnClickListener {
@@ -120,7 +120,7 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         }
     }
 
-    private fun timer() {
+    private fun initTimer() {
         timer = object: CountDownTimer(millisRunning, countDownInterval) {
             override fun onTick(millisUntilFinished: Long) {
                 //Toast.makeText(requireContext(), "$millisUntilFinished", Toast.LENGTH_SHORT).show()
