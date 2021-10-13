@@ -10,4 +10,5 @@
     <string name="bottom_navigation_title_home">Лента</string>
     <string name="bottom_navigation_title_people">Люди</string>
     <string name="bottom_navigation_title_person">Профиль</string>
+    <string name="sign_in_sign_in_button_text">Войти</string>
 </resources>
