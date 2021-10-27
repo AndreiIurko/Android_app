@@ -3,7 +3,6 @@ package com.andreyyurko.firstapp.ui.onboarding
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -69,11 +68,11 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         viewBinding.viewPager.addItemDecoration(itemDecoration)
 
         viewBinding.signInButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Нажата кнопка войти", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), "Нажата кнопка войти", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_onboardingFragment_to_signInFragment)
         }
         viewBinding.signUpButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Нажата кнопка зарегистрироваться", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), "Нажата кнопка зарегистрироваться", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_onboardingFragment_to_signUnFragment)
         }
     }
