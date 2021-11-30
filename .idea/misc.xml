@@ -4,19 +4,27 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/drawable/bg_verification_code_slot_activated.xml" value="0.22760416666666666" />
+        <entry key="app/src/main/res/drawable/bg_verification_code_slot_cursor.xml" value="0.22760416666666666" />
+        <entry key="app/src/main/res/drawable/bg_verification_code_slot_normal.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/drawable/divider.xml" value="0.20572916666666666" />
         <entry key="app/src/main/res/drawable/divider_horizontal.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/drawable/ic_home_white_24dp.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21354166666666666" />
         <entry key="app/src/main/res/drawable/my_image.xml" value="0.19010416666666666" />
+        <entry key="app/src/main/res/drawable/selector_bg_verification_code_slot.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/activity_loading.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/driver_drawable.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/layout/fragment_email_confirmation.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.18958333333333333" />
+        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/layout/item.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/layout/item_user.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/layout/view_verification_code_edit_text.xml" value="0.21145833333333333" />
+        <entry key="app/src/main/res/layout/view_verification_code_slot.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.32222222222222224" />
       </map>

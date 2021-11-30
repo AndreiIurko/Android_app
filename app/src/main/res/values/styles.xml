@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.FirstApp.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/brand_orange</item>
+    </style>
+    
+    <style name="Widget.FirstApp.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@color/brand_orange</item>
+    </style>
+</resources>
