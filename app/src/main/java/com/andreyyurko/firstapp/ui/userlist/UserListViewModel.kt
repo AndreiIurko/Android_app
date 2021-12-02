@@ -1,7 +1,9 @@
 package com.andreyyurko.firstapp.ui.userlist
 
 import androidx.lifecycle.viewModelScope
-import com.andreyyurko.firstapp.Api
+import com.andreyyurko.firstapp.data.network.Api
+import com.andreyyurko.firstapp.BuildConfig
+import com.andreyyurko.firstapp.data.network.MockApi
 import com.andreyyurko.firstapp.entity.User
 import com.andreyyurko.firstapp.ui.base.BaseViewModel
 import com.google.android.exoplayer2.util.Log
@@ -41,17 +43,25 @@ class UserListViewModel : BaseViewModel() {
         }
     }
 
-    private fun provideApi(): Api {
-        return Retrofit.Builder()
-            .client(provideOkHttpClient())
-            .baseUrl("https://reqres.in/api/")
-            .addConverterFactory(MoshiConverterFactory.create(provideMoshi()))
-            .build()
-            .create(Api::class.java)
-    }
+    private fun provideApi() : Api =
+        if (BuildConfig.USE_MOCK_BACKEND_API) {
+            MockApi()
+        }
+        else {
+            Retrofit
+                .Builder()
+                .client(provideOkHttpClient())
+                .baseUrl("https://reqres.in/api/")
+                .addConverterFactory(MoshiConverterFactory.create(provideMoshi()))
+                .build()
+                .create(Api::class.java)
+        }
 
     private fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().build()
+        return OkHttpClient
+            .Builder()
+            //.addInterceptor(AuthorizationInterceptor(AuthRepository()))
+            .build()
     }
 
     private fun provideMoshi(): Moshi {

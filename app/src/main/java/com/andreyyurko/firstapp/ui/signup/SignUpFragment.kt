@@ -60,7 +60,6 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                 email = viewBinding.emailEditText.text?.toString() ?: "",
                 password = viewBinding.passwordEditText.text?.toString() ?: ""
             )
-            findNavController().navigate(R.id.emailConfirmationFragment)
         }
         subscribeToFormFields()
 

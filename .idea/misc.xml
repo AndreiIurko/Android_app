@@ -16,12 +16,14 @@
         <entry key="app/src/main/res/layout/activity_loading.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/driver_drawable.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/layout/fragment_bookmarks.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/fragment_email_confirmation.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.18958333333333333" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/layout/item.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/layout/item_onboarding_text.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/item_user.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/layout/view_verification_code_edit_text.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/view_verification_code_slot.xml" value="0.21145833333333333" />
