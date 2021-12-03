@@ -1,7 +1,7 @@
 package com.andreyyurko.firstapp.ui.signup
 
 import androidx.lifecycle.viewModelScope
-import com.andreyyurko.firstapp.repository.AuthRepository
+import com.andreyyurko.firstapp.repository.OldAuthRepository
 import com.andreyyurko.firstapp.ui.base.BaseViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +25,7 @@ class SignUpViewModel : BaseViewModel() {
     ) {
         viewModelScope.launch {
             try {
-                AuthRepository.signUp(
+                OldAuthRepository.signUp(
                     firstname,
                     lastname,
                     nickname,

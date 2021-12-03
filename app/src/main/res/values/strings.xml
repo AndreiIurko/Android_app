@@ -1,9 +1,14 @@
+<!DOCTYPE resources [
+    <!-- Non-breaking space, U+00A0. -->
+    <!ENTITY nbsp "&#160;">
+    ]>
+
 <resources>
     <string name="app_name">Первое приложение</string>
     <string name="common_back_alert_dialog_text">Введенные данные пропадут</string>
     <string name="common_back_alert_dialog_cancel_button_text">Отменить</string>
     <string name="common_back_alert_dialog_ok_button_text">Ок</string>
-    <string name="onboarding_view_pager_text_1">Осень 2021 г., СПбГУ</string>
+    <string name="onboarding_view_pager_text_1">Осень 2021&nbsp;г., СПбГУ</string>
     <string name="onboarding_view_pager_text_2">Мы изучаем разработку под Android</string>
     <string name="onboarding_view_pager_text_3">Добро пожаловать в команду</string>
     <string name="onboarding_sign_in_button_text">Войти</string>
@@ -26,4 +31,7 @@
     <string name="sign_up_under_nickname_text">Ваше имя будет видно другим пользователям</string>
     <string name="sign_up_under_email_text">Будет видно только вам</string>
     <string name="sign_up_sign_up_button_text">Зарегистрироваться</string>
+    <string name="email_confirmation_submit_button_text">Подтвердить код</string>
+    <string name="email_confirmation_send_code_again"><u>Отправить код еще раз</u></string>
+    <string name="email_confirmation_send_information">Осталось: t секунд</string>
 </resources>

@@ -16,11 +16,50 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.andreyyurko.firstapp.ui.emailconfirmation.VerificationCodeEditText
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton"
-        app:vcet_numberOfSlots="6"
+        android:id="@+id/verificationCodePanel"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton"
+        app:vcet_numberOfSlots="6" />
+
+    <TextView
+        android:id="@+id/sendAgainClickableText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="@string/email_confirmation_send_code_again"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verificationCodePanel" />
+
+    <TextView
+        android:id="@+id/sendInformation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:gravity="center"
+        android:text="@string/email_confirmation_send_information"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendAgainClickableText" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/submitButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="48dp"
+        android:text="@string/email_confirmation_submit_button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendInformation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
