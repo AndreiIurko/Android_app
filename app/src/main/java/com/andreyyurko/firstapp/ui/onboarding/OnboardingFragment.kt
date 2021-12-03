@@ -3,13 +3,12 @@ package com.andreyyurko.firstapp.ui.onboarding
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.andreyyurko.firstapp.R
 import com.andreyyurko.firstapp.databinding.FragmentOnboardingBinding
-import com.andreyyurko.firstapp.onboardingTextAdapterDelegate
+import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -17,6 +16,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
+import dev.chrisbanes.insetter.applyInsetter
 import kotlin.math.abs
 
 
@@ -25,7 +25,7 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
     private val viewBinding by viewBinding(FragmentOnboardingBinding::bind)
 
     private var player: ExoPlayer? = null
-    private var volume: Boolean = true
+    private var isVolumeOn: Boolean = true
 
     private var page: Int = 0
     private lateinit var timer: CountDownTimer
@@ -34,8 +34,19 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTimer()
-        initPlayer()
+        viewBinding.volumeControlButton.applyInsetter {
+            type(statusBars = true) { margin() }
+        }
+        viewBinding.signUpButton.applyInsetter {
+            type(navigationBars = true) { margin() }
+        }
+
+        player = SimpleExoPlayer.Builder(requireContext()).build().apply {
+            addMediaItem(MediaItem.fromUri("asset:///onboarding.mp4"))
+            repeatMode = Player.REPEAT_MODE_ALL
+            prepare()
+        }
+        viewBinding.playerView.player = player
 
         viewBinding.volumeControlButton.setOnClickListener {
             changeVolume()
@@ -44,12 +55,12 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         initViewPager()
 
         viewBinding.signInButton.setOnClickListener {
-            // TODO: go to SignInFragment
-            Toast.makeText(requireContext(), "Нажата кнопка войти", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), "Нажата кнопка войти", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_onboardingFragment_to_signInFragment)
         }
         viewBinding.signUpButton.setOnClickListener {
-            // TODO: go to SignUpFragment
-            Toast.makeText(requireContext(), "Нажата кнопка зарегистрироваться", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), "Нажата кнопка зарегистрироваться", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_onboardingFragment_to_signUnFragment)
         }
     }
 
@@ -108,14 +119,14 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
     }
 
     private fun changeVolume() {
-        if (volume) {
+        if (isVolumeOn) {
             player?.volume = 0F
-            volume = false
+            isVolumeOn = false
             viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_up_white_24dp)
         }
         else {
             player?.volume = 1F
-            volume = true
+            isVolumeOn = true
             viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_off_white_24dp)
         }
     }
