@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.R
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.databinding.FragmentSignInBinding
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
