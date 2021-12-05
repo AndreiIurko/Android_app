@@ -1,47 +1,67 @@
 package com.andreyyurko.firstapp.ui.signup
 
 import androidx.lifecycle.viewModelScope
-import com.andreyyurko.firstapp.repository.OldAuthRepository
+import com.andreyyurko.firstapp.data.network.response.error.SendRegistrationVerificationCodeErrorResponse
+import com.andreyyurko.firstapp.interactor.AuthInteractor
 import com.andreyyurko.firstapp.ui.base.BaseViewModel
-import kotlinx.coroutines.channels.Channel
+import com.haroldadmin.cnradapter.NetworkResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
 
-class SignUpViewModel : BaseViewModel() {
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val authInteractor: AuthInteractor
+) : BaseViewModel() {
 
-    private val _eventChannel = Channel<Event>(Channel.BUFFERED)
+    private val _signUpActionStateFlow = MutableStateFlow<SignUpActionState>(SignUpActionState.Loading)
+    private var _email : String? = null
 
-    fun eventsFlow(): Flow<Event> {
-        return _eventChannel.receiveAsFlow()
+    fun signUpActionStateFlow() : Flow<SignUpActionState> {
+        return _signUpActionStateFlow.asStateFlow()
     }
 
-    fun signUp(
-        firstname: String,
-        lastname: String,
-        nickname: String,
-        email: String,
-        password: String
+    fun sendVerificationCode(
+        email: String
     ) {
+        // если email тот же, что был раньше, то нам не нужно запускать все заново
+        if (email == _email) return
+        _email = email
         viewModelScope.launch {
+            _signUpActionStateFlow.emit(SignUpActionState.Loading)
             try {
-                OldAuthRepository.signUp(
-                    firstname,
-                    lastname,
-                    nickname,
-                    email,
-                    password
-                )
-                // _eventChannel.send(Event.SignUpSuccess)
-                _eventChannel.send(Event.SignUpEmailConfirmationRequired)
-            } catch (error: Exception) {
-                _eventChannel.send(Event.SignUpEmailConfirmationRequired)
+                when (val response = authInteractor.sendRegistrationVerificationCode(
+                    email
+                )) {
+                    is NetworkResponse.Success -> {
+                        _signUpActionStateFlow.emit(SignUpActionState.SendVerificationCodeSucess)
+                    }
+                    is NetworkResponse.ServerError -> {
+                        _signUpActionStateFlow.emit(SignUpActionState.ServerError(response))
+                    }
+                    is NetworkResponse.NetworkError -> {
+                        _signUpActionStateFlow.emit(SignUpActionState.NetworkError(response))
+                    }
+                    is NetworkResponse.UnknownError -> {
+                        _signUpActionStateFlow.emit(SignUpActionState.UnknownError(response))
+                    }
+                }
+            } catch (error: Throwable) {
+                Timber.e(error)
+                _signUpActionStateFlow.emit(SignUpActionState.UnknownError(NetworkResponse.UnknownError(error)))
             }
         }
     }
 
-    sealed class Event {
-        object SignUpSuccess : Event()
-        object SignUpEmailConfirmationRequired : Event()
+    sealed class SignUpActionState {
+        object SendVerificationCodeSucess : SignUpActionState()
+        object Loading : SignUpActionState()
+        data class ServerError(val e: NetworkResponse.ServerError<SendRegistrationVerificationCodeErrorResponse>) : SignUpActionState()
+        data class NetworkError(val e: NetworkResponse.NetworkError) : SignUpActionState()
+        data class UnknownError(val e: NetworkResponse.UnknownError) : SignUpActionState()
     }
 }

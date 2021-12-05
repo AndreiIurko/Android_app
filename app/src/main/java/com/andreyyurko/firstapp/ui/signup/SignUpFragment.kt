@@ -12,8 +12,10 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.CheckBox
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,12 +24,15 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.R
 import com.andreyyurko.firstapp.databinding.FragmentSignUpBinding
+import com.andreyyurko.firstapp.entity.ProfileInformation
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.andreyyurko.firstapp.util.getSpannedString
+import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
 
-
+@AndroidEntryPoint
 class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
     private val viewModel: SignUpViewModel by viewModels()
@@ -53,12 +58,8 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
             onBackButtonPressed()
         }
         viewBinding.signUpButton.setOnClickListener {
-            viewModel.signUp(
-                firstname = viewBinding.firstnameEditText.text?.toString() ?: "",
-                lastname = viewBinding.lastnameEditText.text?.toString() ?: "",
-                nickname = viewBinding.nicknameEditText.text?.toString() ?: "",
-                email = viewBinding.emailEditText.text?.toString() ?: "",
-                password = viewBinding.passwordEditText.text?.toString() ?: ""
+            viewModel.sendVerificationCode(
+                email = viewBinding.emailEditText.text?.toString() ?: ""
             )
         }
         subscribeToFormFields()
@@ -156,10 +157,28 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
     private fun subscribeToEvents() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.eventsFlow().collect { event ->
+                viewModel.signUpActionStateFlow().collect { event ->
                     when (event) {
-                        is SignUpViewModel.Event.SignUpEmailConfirmationRequired -> {
-                            findNavController().navigate(R.id.emailConfirmationFragment)
+                        is SignUpViewModel.SignUpActionState.SendVerificationCodeSucess-> {
+                            // TODO: можно сделать проверку на непустоту, но кажется кнопка за это отвечает
+                            setFragmentResult(
+                                "SignUpProfileInformation", bundleOf("SignUpProfileInformationBundleKey" to Gson().toJson(
+                                    ProfileInformation(
+                                    firstName = viewBinding.firstnameEditText.text.toString(),
+                                    lastName = viewBinding.lastnameEditText.text.toString(),
+                                    nickName = viewBinding.nicknameEditText.text.toString(),
+                                    email = viewBinding.emailEditText.text.toString(),
+                                    password = viewBinding.passwordEditText.text.toString()
+                                )
+                                )
+                                )
+                            )
+                            val controller = findNavController()
+                            if (controller.currentDestination == controller.findDestination(R.id.signUpFragment)){
+                                controller.navigate(R.id.emailConfirmationFragment)
+                            }
+                            //findNavController().navigate(R.id.emailConfirmationFragment)
+
                         }
                         else -> {
                             // Do nothing.
@@ -197,4 +216,5 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
             )
     }
 }
+
 

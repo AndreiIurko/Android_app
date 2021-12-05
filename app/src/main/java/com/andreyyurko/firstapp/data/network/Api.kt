@@ -15,7 +15,7 @@ import retrofit2.http.*
 interface Api {
 
     @GET("users?per_page=10")
-    suspend fun getUsers(): GetUsersResponse
+    suspend fun getUsers(): NetworkResponse<List<User>, GetUsersErrorResponce>
 
     @POST("auth/sign-in-email")
     suspend fun signInWithEmail(

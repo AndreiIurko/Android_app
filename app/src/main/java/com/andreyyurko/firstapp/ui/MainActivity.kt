@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun subscribeToAuthorizationStatus() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // TODO: удалить следующую строчку
+                viewModel.logout()
+                viewModel.isAuthorized()
                 viewModel.isAuthorizedFlow.collect {
                     showSuitableNavigationFlow(it)
                 }
