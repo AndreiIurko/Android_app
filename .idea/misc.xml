@@ -26,6 +26,7 @@
         <entry key="app/src/main/res/layout/item.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/layout/item_onboarding_text.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/item_user.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/layout/new_view_verification_code_edit_text.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/view_verification_code_edit_text.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/view_verification_code_slot.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.34427083333333336" />

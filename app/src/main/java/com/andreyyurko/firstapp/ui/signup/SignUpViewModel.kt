@@ -25,11 +25,20 @@ class SignUpViewModel @Inject constructor(
         return _signUpActionStateFlow.asStateFlow()
     }
 
+    suspend fun refreshSuccess() {
+        _signUpActionStateFlow.emit(SignUpActionState.SendingDone)
+    }
+
     fun sendVerificationCode(
         email: String
     ) {
         // если email тот же, что был раньше, то нам не нужно запускать все заново
-        if (email == _email) return
+        if (email == _email) {
+            viewModelScope.launch {
+                _signUpActionStateFlow.emit(SignUpActionState.SendVerificationCodeSucess)
+            }
+            return
+        }
         _email = email
         viewModelScope.launch {
             _signUpActionStateFlow.emit(SignUpActionState.Loading)
@@ -60,6 +69,7 @@ class SignUpViewModel @Inject constructor(
     sealed class SignUpActionState {
         object SendVerificationCodeSucess : SignUpActionState()
         object Loading : SignUpActionState()
+        object SendingDone : SignUpActionState()
         data class ServerError(val e: NetworkResponse.ServerError<SendRegistrationVerificationCodeErrorResponse>) : SignUpActionState()
         data class NetworkError(val e: NetworkResponse.NetworkError) : SignUpActionState()
         data class UnknownError(val e: NetworkResponse.UnknownError) : SignUpActionState()

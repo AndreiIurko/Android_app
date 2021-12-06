@@ -173,6 +173,7 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                                 )
                                 )
                             )
+                            viewModel.refreshSuccess()
                             val controller = findNavController()
                             if (controller.currentDestination == controller.findDestination(R.id.signUpFragment)){
                                 controller.navigate(R.id.emailConfirmationFragment)
