@@ -26,13 +26,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         subscribeToAuthorizationStatus()
+
     }
 
     private fun subscribeToAuthorizationStatus() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // TODO: удалить следующую строчку
-                viewModel.logout()
                 viewModel.isAuthorized()
                 viewModel.isAuthorizedFlow.collect {
                     showSuitableNavigationFlow(it)

@@ -10,6 +10,8 @@ import com.andreyyurko.firstapp.data.network.response.VerificationTokenResponse
 import com.andreyyurko.firstapp.entity.User
 
 class MockApi : Api {
+
+    private var isAuthorized : Boolean = false
     override suspend fun getUsers(): NetworkResponse<List<User>, GetUsersErrorResponce> {
         return NetworkResponse.Success(
             body = listOf(
@@ -62,14 +64,23 @@ class MockApi : Api {
     }
 
     override suspend fun createProfile(request: CreateProfileRequest): NetworkResponse<AuthTokens, CreateProfileErrorResponse> {
-        return NetworkResponse.Success(
-            AuthTokens(
-                accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2MzgsImV4cCI6MTY0MDg3MTc3MX0.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI",
-                refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2MzgsImV4cCI6MTY0MDg3MTc3MX0.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI",
-                accessTokenExpiration = 1640871771000,
-                refreshTokenExpiration = 1640871771000,
-            ),
-            code = 200
-        )
+        if (isAuthorized) {
+            return NetworkResponse.Success(
+                AuthTokens(
+                    accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2MzgsImV4cCI6MTY0MDg3MTc3MX0.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI",
+                    refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2MzgsImV4cCI6MTY0MDg3MTc3MX0.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI",
+                    accessTokenExpiration = 1640871771000,
+                    refreshTokenExpiration = 1640871771000,
+                ),
+                code = 200
+            )
+        }
+        else {
+            isAuthorized = true
+            return NetworkResponse.ServerError<CreateProfileErrorResponse>(
+                body = null,
+                code = 400
+            )
+        }
     }
 }

@@ -33,6 +33,16 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
     private var millisRunning: Long = 2000
     private var countDownInterval: Long = 100
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        player = SimpleExoPlayer.Builder(requireContext()).build().apply {
+            addMediaItem(MediaItem.fromUri("asset:///onboarding.mp4"))
+            repeatMode = Player.REPEAT_MODE_ALL
+            prepare()
+        }
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewBinding.volumeControlButton.applyInsetter {
@@ -41,14 +51,7 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         viewBinding.signUpButton.applyInsetter {
             type(navigationBars = true) { margin() }
         }
-
-        player = SimpleExoPlayer.Builder(requireContext()).build().apply {
-            addMediaItem(MediaItem.fromUri("asset:///onboarding.mp4"))
-            repeatMode = Player.REPEAT_MODE_ALL
-            prepare()
-        }
         viewBinding.playerView.player = player
-
         viewBinding.volumeControlButton.setOnClickListener {
             changeVolume()
         }
@@ -62,7 +65,7 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             page.translationX = -pageTranslationX * position
             // Next line scales the item's height. You can remove it if you don't want this effect
-            page.scaleY = 1 - (0.30f * abs(position))
+            //page.scaleY = 1 - (0.30f * abs(position))
             // If you want a fading effect uncomment the next line:
             page.alpha = 0.25f + (1 - abs(position))
         }
@@ -123,12 +126,12 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         if (isVolumeOn) {
             player?.volume = 0F
             isVolumeOn = false
-            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_up_white_24dp)
+            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_off_white_24dp)
         }
         else {
             player?.volume = 1F
             isVolumeOn = true
-            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_off_white_24dp)
+            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_up_white_24dp)
         }
     }
 
@@ -146,13 +149,15 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
             }
 
             override fun onFinish() {
-                if (viewBinding.viewPager.adapter?.itemCount == page + 1) {
-                    page = 0
-                } else {
-                    page++
+                if (!timerIsStop) {
+                    if (viewBinding.viewPager.adapter?.itemCount == page + 1) {
+                        page = 0
+                    } else {
+                        page++
+                    }
+                    viewBinding.viewPager.setCurrentItem(page, true)
+                    timer().start()
                 }
-                viewBinding.viewPager.setCurrentItem(page, true)
-                timer().start()
             }
         }
     }

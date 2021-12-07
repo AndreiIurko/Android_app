@@ -34,4 +34,5 @@
     <string name="email_confirmation_submit_button_text">Подтвердить код</string>
     <string name="email_confirmation_send_code_again"><u>Отправить код еще раз</u></string>
     <string name="email_confirmation_send_information">Осталось: t секунд</string>
+    <string name="profileLogOutbutton">Выйти</string>
 </resources>

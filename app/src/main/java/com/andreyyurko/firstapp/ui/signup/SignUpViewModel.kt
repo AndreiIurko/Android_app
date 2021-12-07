@@ -1,7 +1,8 @@
 package com.andreyyurko.firstapp.ui.signup
 
 import androidx.lifecycle.viewModelScope
-import com.andreyyurko.firstapp.data.network.response.error.SendRegistrationVerificationCodeErrorResponse
+import com.andreyyurko.firstapp.data.network.response.error.CreateProfileErrorResponse
+import com.andreyyurko.firstapp.entity.ProfileInformation
 import com.andreyyurko.firstapp.interactor.AuthInteractor
 import com.andreyyurko.firstapp.ui.base.BaseViewModel
 import com.haroldadmin.cnradapter.NetworkResponse
@@ -26,28 +27,30 @@ class SignUpViewModel @Inject constructor(
     }
 
     suspend fun refreshSuccess() {
-        _signUpActionStateFlow.emit(SignUpActionState.SendingDone)
+        _signUpActionStateFlow.emit(SignUpActionState.NotVerifiedYet)
     }
 
-    fun sendVerificationCode(
-        email: String
+    fun signUp(
+        email: String,
+        verificationToken: String,
+        firstName: String,
+        lastName: String,
+        nickName: String,
+        password: String
     ) {
-        // если email тот же, что был раньше, то нам не нужно запускать все заново
-        if (email == _email) {
-            viewModelScope.launch {
-                _signUpActionStateFlow.emit(SignUpActionState.SendVerificationCodeSucess)
-            }
-            return
-        }
-        _email = email
         viewModelScope.launch {
             _signUpActionStateFlow.emit(SignUpActionState.Loading)
             try {
-                when (val response = authInteractor.sendRegistrationVerificationCode(
-                    email
+                when (val response = authInteractor.createProfile(
+                    email = email,
+                    verificationToken = verificationToken,
+                    firstName = firstName,
+                    lastName = lastName,
+                    nickName = nickName,
+                    password = password
                 )) {
                     is NetworkResponse.Success -> {
-                        _signUpActionStateFlow.emit(SignUpActionState.SendVerificationCodeSucess)
+                        _signUpActionStateFlow.emit(SignUpActionState.SignUpSuccess)
                     }
                     is NetworkResponse.ServerError -> {
                         _signUpActionStateFlow.emit(SignUpActionState.ServerError(response))
@@ -67,10 +70,10 @@ class SignUpViewModel @Inject constructor(
     }
 
     sealed class SignUpActionState {
-        object SendVerificationCodeSucess : SignUpActionState()
+        object SignUpSuccess : SignUpActionState()
         object Loading : SignUpActionState()
-        object SendingDone : SignUpActionState()
-        data class ServerError(val e: NetworkResponse.ServerError<SendRegistrationVerificationCodeErrorResponse>) : SignUpActionState()
+        object NotVerifiedYet : SignUpActionState()
+        data class ServerError(val e: NetworkResponse.ServerError<CreateProfileErrorResponse>) : SignUpActionState()
         data class NetworkError(val e: NetworkResponse.NetworkError) : SignUpActionState()
         data class UnknownError(val e: NetworkResponse.UnknownError) : SignUpActionState()
     }

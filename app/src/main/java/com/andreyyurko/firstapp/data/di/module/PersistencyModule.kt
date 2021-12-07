@@ -18,7 +18,10 @@ object PersistencyModule {
     @Provides
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences("our_awesome_app_local_key_value_storage", Context.MODE_PRIVATE)
+        context.getSharedPreferences(
+            "our_awesome_app_local_key_value_storage",
+            Context.MODE_PRIVATE
+        )
 
     @Provides
     @Singleton

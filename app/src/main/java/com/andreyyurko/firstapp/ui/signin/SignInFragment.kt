@@ -12,6 +12,7 @@ import com.andreyyurko.firstapp.R
 import com.andreyyurko.firstapp.databinding.FragmentSignInBinding
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 
 @AndroidEntryPoint
 class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
@@ -21,6 +22,7 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -33,6 +35,13 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewBinding.backButton.applyInsetter {
+            type(statusBars = true) { margin() }
+        }
+        viewBinding.signInButton.applyInsetter {
+            type(navigationBars = true) { margin() }
+        }
         viewBinding.backButton.setOnClickListener {
             onBackButtonPressed()
         }
