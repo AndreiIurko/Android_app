@@ -5,7 +5,7 @@
         android:width="3dp"/>
     <gradient
         android:angle="90"
-        android:centerColor="#990000"
-        android:endColor="#300000"
-        android:startColor="#300000" />
+        android:centerColor="@color/brand_orange"
+        android:endColor="@color/brand_green"
+        android:startColor="@color/brand_green" />
 </shape>

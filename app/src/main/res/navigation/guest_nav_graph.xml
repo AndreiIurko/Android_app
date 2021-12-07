@@ -13,7 +13,7 @@
             app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_onboardingFragment_to_signUnFragment"
-            app:destination="@id/signUnFragment" />
+            app:destination="@id/signUpFragment" />
     </fragment>
 
     <fragment
@@ -22,7 +22,7 @@
         android:label="SignInFragment" />
 
     <fragment
-        android:id="@+id/signUnFragment"
+        android:id="@+id/signUpFragment"
         android:name="com.andreyyurko.firstapp.ui.signup.SignUpFragment"
         android:label="SignUnFragment" >
         <action

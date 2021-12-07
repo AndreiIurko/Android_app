@@ -4,9 +4,8 @@ import com.andreyyurko.firstapp.data.network.Api
 import com.andreyyurko.firstapp.data.network.request.CreateProfileRequest
 import com.andreyyurko.firstapp.data.network.request.RefreshAuthTokensRequest
 import com.andreyyurko.firstapp.data.network.request.SignInWithEmailRequest
-import com.andreyyurko.firstapp.data.network.response.error.CreateProfileErrorResponse
-import com.andreyyurko.firstapp.data.network.response.error.RefreshAuthTokensErrorResponse
-import com.andreyyurko.firstapp.data.network.response.error.SignInWithEmailErrorResponse
+import com.andreyyurko.firstapp.data.network.response.VerificationTokenResponse
+import com.andreyyurko.firstapp.data.network.response.error.*
 import com.andreyyurko.firstapp.data.persistent.LocalKeyValueStorage
 import com.andreyyurko.firstapp.entity.AuthTokens
 import com.blelocking.di.AppCoroutineScope
@@ -96,5 +95,16 @@ class AuthRepository @Inject constructor(
 
     suspend fun generateRefreshedAuthTokens(refreshToken: String): NetworkResponse<AuthTokens, RefreshAuthTokensErrorResponse> {
         return api.refreshAuthTokens(RefreshAuthTokensRequest(refreshToken))
+    }
+
+    suspend fun sendRegistrationVerificationCode(email : String): NetworkResponse<Unit, SendRegistrationVerificationCodeErrorResponse> {
+        return api.sendRegistrationVerificationCode(email)
+    }
+
+    suspend fun verifyRegistrationCode(
+        email: String,
+        code: String
+    ): NetworkResponse<VerificationTokenResponse, VerifyRegistrationCodeErrorResponse> {
+        return api.verifyRegistrationCode(email, code)
     }
 }
