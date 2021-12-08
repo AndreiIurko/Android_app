@@ -39,7 +39,7 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnimateLogo()
+        animateLogo()
 
         viewBinding.backButton.applyInsetter {
             type(statusBars = true) { margin() }
@@ -78,7 +78,7 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         }
     }
 
-    private fun AnimateLogo(){
+    private fun animateLogo(){
         val currentY: Float= viewBinding.mknLogoImageView.translationY
         val mknMoveAnimator = ObjectAnimator.ofFloat(
             viewBinding.mknLogoImageView,
