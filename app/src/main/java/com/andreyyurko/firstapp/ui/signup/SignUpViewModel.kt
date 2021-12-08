@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.andreyyurko.firstapp.data.network.response.error.CreateProfileErrorResponse
 import com.andreyyurko.firstapp.entity.ProfileInformation
 import com.andreyyurko.firstapp.interactor.AuthInteractor
+import com.andreyyurko.firstapp.interactor.ProfileInformationInteractor
 import com.andreyyurko.firstapp.ui.base.BaseViewModel
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val authInteractor: AuthInteractor
+    private val authInteractor: AuthInteractor,
+    private val profileInformationInteractor: ProfileInformationInteractor
 ) : BaseViewModel() {
 
     private val _signUpActionStateFlow = MutableStateFlow<SignUpActionState>(SignUpActionState.Loading)
@@ -50,6 +52,13 @@ class SignUpViewModel @Inject constructor(
                     password = password
                 )) {
                     is NetworkResponse.Success -> {
+                        profileInformationInteractor.saveProfileInformation(ProfileInformation(
+                            email = email,
+                            firstName = firstName,
+                            lastName = lastName,
+                            nickName = nickName,
+                            password = password
+                        ))
                         _signUpActionStateFlow.emit(SignUpActionState.SignUpSuccess)
                     }
                     is NetworkResponse.ServerError -> {
