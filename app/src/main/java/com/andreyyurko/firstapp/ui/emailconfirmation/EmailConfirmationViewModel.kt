@@ -19,11 +19,11 @@ import javax.inject.Inject
 class EmailConfirmationViewModel @Inject constructor(
     private val authInteractor: AuthInteractor
 ) : BaseViewModel() {
-    private val _emailConfirmationActionStateFlow = MutableStateFlow<SubmissionCodeActionState>(SubmissionCodeActionState.Loading)
+    private val _emailConfirmationActionStateFlow = MutableStateFlow<ConfirmationCodeActionState>(ConfirmationCodeActionState.Loading)
 
     private val _codeSendingActionStateFlow = MutableStateFlow<SendingCodeActionState>(SendingCodeActionState.Loading)
 
-    fun confirmationActionStateFlow(): Flow<SubmissionCodeActionState> {
+    fun confirmationActionStateFlow(): Flow<ConfirmationCodeActionState> {
         return _emailConfirmationActionStateFlow.asStateFlow()
     }
 
@@ -33,81 +33,35 @@ class EmailConfirmationViewModel @Inject constructor(
 
     fun submitCode(
         email: String,
-        firstName: String,
-        lastName: String,
-        userName: String,
-        password: String,
         code: String
     ) {
         viewModelScope.launch {
-            _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.Loading)
+            _emailConfirmationActionStateFlow.emit(ConfirmationCodeActionState.Loading)
             try {
                 when (val response = authInteractor.verifyRegistrationCode(email, code)) {
                     is NetworkResponse.Success -> {
-                        val verificationToken = response.body.verificationToken
-                        createProfile(
-                            email = email,
-                            verificationToken = verificationToken,
-                            firstName = firstName,
-                            lastName = lastName,
-                            userName = userName,
-                            password = password
-                        )
+                        _emailConfirmationActionStateFlow.emit(ConfirmationCodeActionState.SubmissionCodeSuccess)
                     }
                     is NetworkResponse.ServerError -> {
-                        _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.VerificationServerError(response))
+                        _emailConfirmationActionStateFlow.emit(ConfirmationCodeActionState.VerificationServerError(response))
                     }
                     is NetworkResponse.NetworkError -> {
-                        _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.NetworkError(response))
+                        _emailConfirmationActionStateFlow.emit(ConfirmationCodeActionState.NetworkError(response))
                     }
                     is NetworkResponse.UnknownError -> {
-                        _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.UnknownError(response))
+                        _emailConfirmationActionStateFlow.emit(ConfirmationCodeActionState.UnknownError(response))
                     }
                 }
             } catch (error: Throwable) {
                 Timber.e(error)
-                _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.UnknownError(NetworkResponse.UnknownError(error)))
+                _emailConfirmationActionStateFlow.emit(ConfirmationCodeActionState.UnknownError(NetworkResponse.UnknownError(error)))
             }
         }
     }
 
-    private suspend fun createProfile(
-        email: String,
-        verificationToken: String,
-        firstName: String,
-        lastName: String,
-        userName: String,
-        password: String
-    ) {
-        try {
-            when (val response = authInteractor.createProfile(
-                email = email,
-                verificationToken = verificationToken,
-                firstName = firstName,
-                lastName = lastName,
-                userName = userName,
-                password = password
-            )) {
-                is NetworkResponse.Success -> {
-                    _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.SubmissionCodeSuccess)
-                }
-                is NetworkResponse.ServerError -> {
-                    _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.CreateProfileServerError(response))
-                }
-                is NetworkResponse.NetworkError -> {
-                    _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.NetworkError(response))
-                }
-                is NetworkResponse.UnknownError -> {
-                    _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.UnknownError(response))
-                }
-            }
-        } catch (error: Throwable) {
-            Timber.e(error)
-            _emailConfirmationActionStateFlow.emit(SubmissionCodeActionState.UnknownError(NetworkResponse.UnknownError(error)))
-        }
-    }
 
-    fun sendCodeAgain(email: String) {
+
+    fun sendCode(email: String) {
         viewModelScope.launch {
             _codeSendingActionStateFlow.emit(SendingCodeActionState.Loading)
             try {
@@ -132,13 +86,16 @@ class EmailConfirmationViewModel @Inject constructor(
         }
     }
 
-    sealed class SubmissionCodeActionState {
-        object SubmissionCodeSuccess : SubmissionCodeActionState()
-        object Loading : SubmissionCodeActionState()
-        data class VerificationServerError(val e: NetworkResponse.ServerError<VerifyRegistrationCodeErrorResponse>) : SubmissionCodeActionState()
-        data class CreateProfileServerError(val e: NetworkResponse.ServerError<CreateProfileErrorResponse>) : SubmissionCodeActionState()
-        data class NetworkError(val e: NetworkResponse.NetworkError) : SubmissionCodeActionState()
-        data class UnknownError(val e: NetworkResponse.UnknownError) : SubmissionCodeActionState()
+    suspend fun refreshSuccess() {
+        _emailConfirmationActionStateFlow.emit(ConfirmationCodeActionState.Loading)
+    }
+
+    sealed class ConfirmationCodeActionState {
+        object SubmissionCodeSuccess : ConfirmationCodeActionState()
+        object Loading : ConfirmationCodeActionState()
+        data class VerificationServerError(val e: NetworkResponse.ServerError<VerifyRegistrationCodeErrorResponse>) : ConfirmationCodeActionState()
+        data class NetworkError(val e: NetworkResponse.NetworkError) : ConfirmationCodeActionState()
+        data class UnknownError(val e: NetworkResponse.UnknownError) : ConfirmationCodeActionState()
     }
 
     sealed class SendingCodeActionState {
@@ -148,4 +105,5 @@ class EmailConfirmationViewModel @Inject constructor(
         data class NetworkError(val e: NetworkResponse.NetworkError) : SendingCodeActionState()
         data class UnknownError(val e: NetworkResponse.UnknownError) : SendingCodeActionState()
     }
+
 }

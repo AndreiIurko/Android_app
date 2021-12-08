@@ -1,8 +1,12 @@
 package com.andreyyurko.firstapp.ui.signin
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.Animation
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -13,6 +17,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.databinding.FragmentSignInBinding
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 
 @AndroidEntryPoint
 class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
@@ -22,6 +27,7 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -34,6 +40,14 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        animateLogo()
+
+        viewBinding.backButton.applyInsetter {
+            type(statusBars = true) { margin() }
+        }
+        viewBinding.signInButton.applyInsetter {
+            type(navigationBars = true) { margin() }
+        }
         viewBinding.backButton.setOnClickListener {
             onBackButtonPressed()
         }
@@ -63,6 +77,44 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
                 password = password?.toString()
             )
         }
+    }
+
+    private fun animateLogo(){
+        val currentY: Float= viewBinding.mknLogoImageView.translationY
+        val mknMoveAnimator = ObjectAnimator.ofFloat(
+            viewBinding.mknLogoImageView,
+            "translationY",
+            currentY,
+            -25f,
+            currentY
+        )
+        mknMoveAnimator.interpolator = AccelerateInterpolator(0.5f)
+        mknMoveAnimator.repeatCount = Animation.INFINITE
+
+
+        val mknScaleXAnimator = ObjectAnimator.ofFloat(
+            viewBinding.mknLogoImageView,
+            "scaleX",
+            1F,
+            1.1F,
+            1F
+        )
+        mknScaleXAnimator.repeatCount = Animation.INFINITE
+
+        val mknScaleYAnimator = ObjectAnimator.ofFloat(
+            viewBinding.mknLogoImageView,
+            "scaleY",
+            1F,
+            1.05F,
+            1F
+        )
+        mknScaleYAnimator.repeatCount = Animation.INFINITE
+
+        val mknAnimatorSet = AnimatorSet()
+        mknAnimatorSet.play(mknMoveAnimator).with(mknScaleXAnimator).with(mknScaleYAnimator)
+        mknAnimatorSet.duration = 2000
+
+        mknAnimatorSet.start()
     }
 
     private fun onBackButtonPressed() {

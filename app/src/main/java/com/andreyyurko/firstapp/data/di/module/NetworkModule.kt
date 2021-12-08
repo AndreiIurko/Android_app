@@ -1,8 +1,8 @@
 package com.andreyyurko.firstapp.data.di.module
 
 import android.os.Build
-import com.andreyyurko.firstapp.data.network.Api
 import com.andreyyurko.firstapp.BuildConfig
+import com.andreyyurko.firstapp.data.network.Api
 import com.andreyyurko.firstapp.data.network.MockApi
 import com.andreyyurko.firstapp.data.network.interceptor.AuthorizationInterceptor
 import com.andreyyurko.firstapp.data.network.interceptor.FirstAppAuthenticator

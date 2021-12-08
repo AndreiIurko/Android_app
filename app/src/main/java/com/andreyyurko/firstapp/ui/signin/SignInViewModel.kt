@@ -3,6 +3,7 @@ package com.andreyyurko.firstapp.ui.signin
 import androidx.lifecycle.viewModelScope
 import com.andreyyurko.firstapp.data.network.response.error.SignInWithEmailErrorResponse
 import com.andreyyurko.firstapp.interactor.AuthInteractor
+import com.andreyyurko.firstapp.interactor.ProfileInformationInteractor
 import com.andreyyurko.firstapp.ui.base.BaseViewModel
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel

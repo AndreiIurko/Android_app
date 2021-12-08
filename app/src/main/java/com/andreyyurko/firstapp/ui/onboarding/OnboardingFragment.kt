@@ -28,9 +28,20 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
     private var isVolumeOn: Boolean = true
 
     private var page: Int = 0
-    private lateinit var timer: CountDownTimer
-    private var millisRunning: Long = 4000
-    private var countDownInterval: Long = 4000
+    private var isScroll = false
+    private var timerIsStop = false
+    private var millisRunning: Long = 2000
+    private var countDownInterval: Long = 100
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        player = SimpleExoPlayer.Builder(requireContext()).build().apply {
+            addMediaItem(MediaItem.fromUri("asset:///onboarding.mp4"))
+            repeatMode = Player.REPEAT_MODE_ALL
+            prepare()
+        }
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,19 +51,32 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         viewBinding.signUpButton.applyInsetter {
             type(navigationBars = true) { margin() }
         }
-
-        player = SimpleExoPlayer.Builder(requireContext()).build().apply {
-            addMediaItem(MediaItem.fromUri("asset:///onboarding.mp4"))
-            repeatMode = Player.REPEAT_MODE_ALL
-            prepare()
-        }
         viewBinding.playerView.player = player
-
         viewBinding.volumeControlButton.setOnClickListener {
             changeVolume()
         }
 
-        initViewPager()
+        viewBinding.viewPager.setTextPages()
+        viewBinding.viewPager.attachDots(viewBinding.onboardingTextTabLayout)
+        viewBinding.viewPager.offscreenPageLimit = 1
+        val nextItemVisiblePx = 250
+        val currentItemHorizontalMarginPx = 150
+        val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+        val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
+            page.translationX = -pageTranslationX * position
+            // Next line scales the item's height. You can remove it if you don't want this effect
+            //page.scaleY = 1 - (0.30f * abs(position))
+            // If you want a fading effect uncomment the next line:
+            page.alpha = 0.25f + (1 - abs(position))
+        }
+        viewBinding.viewPager.setPageTransformer(pageTransformer)
+
+// The ItemDecoration gives the current (centered) item horizontal margin so that
+// it doesn't occupy the whole screen width. Without it the items overlap
+        val itemDecoration = HorizontalMarginItemDecoration(
+            200
+        )
+        viewBinding.viewPager.addItemDecoration(itemDecoration)
 
         viewBinding.signInButton.setOnClickListener {
             //Toast.makeText(requireContext(), "Нажата кнопка войти", Toast.LENGTH_SHORT).show()
@@ -72,13 +96,13 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
 
     override fun onPause() {
         super.onPause()
-        timer.cancel()
+        timerIsStop = true
         player?.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        timer.cancel()
+        timerIsStop = true
         player?.release()
     }
 
@@ -98,75 +122,55 @@ class OnboardingFragment : BaseFragment(R.layout.fragment_onboarding) {
         TabLayoutMediator(tabLayout, this) { _, _ -> }.attach()
     }
 
-    private fun initViewPager() {
-        viewBinding.viewPager.setTextPages()
-        viewBinding.viewPager.attachDots(viewBinding.onboardingTextTabLayout)
-        viewBinding.viewPager.offscreenPageLimit = 1
-        val nextItemVisiblePx = 250
-        val currentItemHorizontalMarginPx = 150
-        val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
-        val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
-            page.translationX = -pageTranslationX * position
-            page.scaleY = 1 - (0.30f * abs(position))
-            page.alpha = 0.25f + (1 - abs(position))
-        }
-        viewBinding.viewPager.setPageTransformer(pageTransformer)
-
-        val itemDecoration = HorizontalMarginItemDecoration(
-            200
-        )
-        viewBinding.viewPager.addItemDecoration(itemDecoration)
-    }
-
     private fun changeVolume() {
         if (isVolumeOn) {
             player?.volume = 0F
             isVolumeOn = false
-            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_up_white_24dp)
+            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_off_white_24dp)
         }
         else {
             player?.volume = 1F
             isVolumeOn = true
-            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_off_white_24dp)
+            viewBinding.volumeControlButton.setImageResource(R.drawable.ic_volume_up_white_24dp)
         }
     }
 
-    private fun initTimer() {
-        timer = object: CountDownTimer(millisRunning, countDownInterval) {
+    private fun timer() : CountDownTimer {
+        return object: CountDownTimer(millisRunning,countDownInterval) {
             override fun onTick(millisUntilFinished: Long) {
-                //Toast.makeText(requireContext(), "$millisUntilFinished", Toast.LENGTH_SHORT).show()
+                if (isScroll) {
+                    cancel()
+                    isScroll = false
+                    timer().start()
+                }
+                if (timerIsStop) {
+                    cancel()
+                }
             }
 
             override fun onFinish() {
-                if (viewBinding.viewPager.adapter?.itemCount == page + 1) {
-                    page = 0
-                } else {
-                    page++
+                if (!timerIsStop) {
+                    if (viewBinding.viewPager.adapter?.itemCount == page + 1) {
+                        page = 0
+                    } else {
+                        page++
+                    }
+                    viewBinding.viewPager.setCurrentItem(page, true)
+                    timer().start()
                 }
-                viewBinding.viewPager.setCurrentItem(page, true)
             }
         }
-
     }
 
     private fun autoscroll() {
-        timer.start()
+        timerIsStop = false
+        timer().start()
         viewBinding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                isScroll = true
                 page = position
-                timer.cancel()
-                timer.start()
             }
         })
-    }
-
-    private fun initPlayer() {
-        player = SimpleExoPlayer.Builder(requireContext()).build().apply {
-            addMediaItem(MediaItem.fromUri("asset:///onboarding.mp4"))
-            repeatMode = Player.REPEAT_MODE_ALL
-            prepare()
-        }
-        viewBinding.playerView.player = player
     }
 }
