@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.R
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.databinding.FragmentMainBinding
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 
