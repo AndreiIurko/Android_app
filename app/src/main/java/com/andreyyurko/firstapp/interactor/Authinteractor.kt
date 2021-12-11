@@ -40,7 +40,7 @@ class AuthInteractor @Inject constructor(
         verificationToken: String,
         firstName: String,
         lastName: String,
-        userName: String,
+        nickName: String,
         password: String
     ): NetworkResponse<AuthTokens, CreateProfileErrorResponse> {
         val response = authRepository.generateAuthTokensByEmailAndPersonalInfo(
@@ -48,7 +48,7 @@ class AuthInteractor @Inject constructor(
             verificationToken,
             firstName,
             lastName,
-            userName,
+            nickName,
             password
         )
         when (response) {

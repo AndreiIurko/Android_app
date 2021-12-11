@@ -24,13 +24,13 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.andreyyurko.firstapp.R
 import com.andreyyurko.firstapp.databinding.FragmentSignUpBinding
-import com.andreyyurko.firstapp.entity.ProfileInformation
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.andreyyurko.firstapp.util.getSpannedString
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+
 
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
@@ -39,8 +39,14 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
     private val viewBinding by viewBinding(FragmentSignUpBinding::bind)
 
+    private val verificationCode : String = ""
+
+    //private val moshi: Moshi = Moshi.Builder().build()
+    //private val jsonAdapter: JsonAdapter<ProfileInformation> = moshi.adapter(ProfileInformation::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -53,13 +59,26 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewBinding.backButton.applyInsetter {
+            type(statusBars = true) { margin() }
+        }
+        viewBinding.signUpButton.applyInsetter {
+            type(navigationBars = true) { margin() }
+        }
+
         subscribeToEvents()
         viewBinding.backButton.setOnClickListener {
             onBackButtonPressed()
         }
         viewBinding.signUpButton.setOnClickListener {
-            viewModel.sendVerificationCode(
-                email = viewBinding.emailEditText.text?.toString() ?: ""
+            viewModel.signUp(
+                firstName = viewBinding.firstnameEditText.text?.toString() ?: "",
+                lastName = viewBinding.lastnameEditText.text?.toString() ?: "",
+                nickName = viewBinding.nicknameEditText.text?.toString() ?: "",
+                email = viewBinding.emailEditText.text?.toString() ?: "",
+                password = viewBinding.passwordEditText.text?.toString() ?: "",
+                verificationToken = verificationCode
             )
         }
         subscribeToFormFields()
@@ -159,18 +178,13 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.signUpActionStateFlow().collect { event ->
                     when (event) {
-                        is SignUpViewModel.SignUpActionState.SendVerificationCodeSucess-> {
-                            // TODO: можно сделать проверку на непустоту, но кажется кнопка за это отвечает
+                        is SignUpViewModel.SignUpActionState.SignUpSuccess-> {
+                            // Do nothing
+                        }
+                        is SignUpViewModel.SignUpActionState.ServerError-> {
                             setFragmentResult(
-                                "SignUpProfileInformation", bundleOf("SignUpProfileInformationBundleKey" to Gson().toJson(
-                                    ProfileInformation(
-                                    firstName = viewBinding.firstnameEditText.text.toString(),
-                                    lastName = viewBinding.lastnameEditText.text.toString(),
-                                    nickName = viewBinding.nicknameEditText.text.toString(),
-                                    email = viewBinding.emailEditText.text.toString(),
-                                    password = viewBinding.passwordEditText.text.toString()
-                                )
-                                )
+                                "SignUpEmail", bundleOf("SignUpEmailBundleKey" to
+                                        viewBinding.emailEditText.text.toString()
                                 )
                             )
                             viewModel.refreshSuccess()
@@ -178,8 +192,6 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                             if (controller.currentDestination == controller.findDestination(R.id.signUpFragment)){
                                 controller.navigate(R.id.emailConfirmationFragment)
                             }
-                            //findNavController().navigate(R.id.emailConfirmationFragment)
-
                         }
                         else -> {
                             // Do nothing.

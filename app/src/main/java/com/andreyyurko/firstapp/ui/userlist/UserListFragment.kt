@@ -15,6 +15,7 @@ import com.andreyyurko.firstapp.databinding.FragmentUserListBinding
 import com.andreyyurko.firstapp.ui.base.BaseFragment
 import com.google.android.exoplayer2.util.Log
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -32,6 +33,7 @@ class UserListFragment : BaseFragment(R.layout.fragment_user_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[UserListViewModel::class.java]
+
     }
 
     //@SuppressLint("UnsafeRepeatOnLifecycleDetector")
@@ -39,6 +41,10 @@ class UserListFragment : BaseFragment(R.layout.fragment_user_list) {
         //val viewModel : MainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         Log.d(LOG_TAG, "onCreate()")
         super.onViewCreated(view, savedInstanceState)
+
+        viewBinding.usersRecyclerView.applyInsetter {
+            type(statusBars = true) { margin() }
+        }
         //setContentView(android.R.layout.fragment_user_list)
         setupRecyclerView()
 

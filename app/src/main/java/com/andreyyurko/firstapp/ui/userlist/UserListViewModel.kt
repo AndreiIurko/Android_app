@@ -87,6 +87,7 @@ private fun provideOkHttpClient(): OkHttpClient {
 }
 
 private fun provideMoshi(): Moshi {
-    return Moshi.Builder().build()
+    return Moshi.Builder()
+        .build()
 }
 }

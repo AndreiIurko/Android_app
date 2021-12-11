@@ -12,7 +12,17 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.andreyyurko.firstapp.R
 import com.andreyyurko.firstapp.databinding.ViewVerificationCodeEditTextBinding
+import com.andreyyurko.firstapp.databinding.ViewVerificationCodeSlotBinding
 import kotlin.properties.Delegates
+import android.view.View
+import android.widget.LinearLayout
+
+
+
+
+
+
+
 
 
 class VerificationCodeEditText @JvmOverloads constructor(
@@ -26,11 +36,13 @@ private val viewBinding =
     ViewVerificationCodeEditTextBinding.inflate(LayoutInflater.from(context), this)
 
 var numberOfSlots: Int by Delegates.observable(0) { _, _, newValue ->
-    println(newValue)
-
     val linearLayout = viewBinding.slotContainer
     for (i in 0 until newValue) {
-        val view = VerificationCodeSlotView(context)
+        LayoutInflater.from(context).inflate(
+            R.layout.view_verification_code_linear_layout_element, linearLayout
+        )
+        // TODO: настраивать размер в зависимости от числа ячеек
+        /*val view = VerificationCodeSlotView(context)
         val width = resources.getDimension(R.dimen.verification_code_slot_width).toInt()
         val height = resources.getDimension(R.dimen.verification_code_slot_height).toInt()
         val margStart = resources.getDimension(R.dimen.edit_text_half_horizontal_padding).toInt()
@@ -41,18 +53,14 @@ var numberOfSlots: Int by Delegates.observable(0) { _, _, newValue ->
             marginStart = margStart
             marginEnd = margEnd
         }
-        linearLayout.addView(view, i)
+        linearLayout.addView(view)*/
     }
-
-    println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-    println(linearLayout.childCount)
 
     slotViews = mutableListOf<VerificationCodeSlotView>().apply {
         for (i in 0 until newValue) {
             this.add(linearLayout.getChildAt(i) as VerificationCodeSlotView)
         }
     }
-    println(linearLayout.childCount)
 
     slotValues = Array(newValue) { null }
 
