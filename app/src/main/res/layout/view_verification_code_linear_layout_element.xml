@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
+
+    <com.andreyyurko.firstapp.ui.emailconfirmation.VerificationCodeSlotView
+        android:layout_width="@dimen/verification_code_slot_width"
+        android:layout_height="@dimen/verification_code_slot_height"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/selector_bg_verification_code_slot"
+        app:layout_constraintBottom_toBottomOf="@+id/realVerificationCodeEditText"
+        app:layout_constraintLeft_toRightOf="@+id/slot5"
+        app:layout_constraintRight_toRightOf="@+id/realVerificationCodeEditText"
+        app:layout_constraintTop_toTopOf="@+id/realVerificationCodeEditText"
+        tools:ignore="RtlHardcoded" />
+
+</merge>
