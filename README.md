@@ -13,7 +13,7 @@ Because this is my first project, you can find many basic features: Navigation, 
 
 - Dependency injection with ![Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
   - Application, fragments and viewModels have annotations
-  - ![Here](https://github.com/AndreyYurko/Android_app/blob/main/app/src/main/java/com/andreyyurko/firstapp/repository/AuthRepository.kt) you can find singleton and for example ![here](https://github.com/AndreyYurko/Android_app/blob/main/app/src/main/java/com/andreyyurko/firstapp/ui/signin/SignInViewModel.kt) it injection
+  - ![Here](https://github.com/AndreyYurko/Android_app/blob/main/app/src/main/java/com/andreyyurko/firstapp/repository/AuthRepository.kt) you can find singleton, and ![here](https://github.com/AndreyYurko/Android_app/blob/main/app/src/main/java/com/andreyyurko/firstapp/ui/signin/SignInViewModel.kt) it's injection
 - ![Custom view](https://github.com/AndreyYurko/Android_app/blob/main/app/src/main/java/com/andreyyurko/firstapp/ui/emailconfirmation/VerificationCodeEditText.kt) 
 - Coroutines and flows:
   - For example ![here](https://github.com/AndreyYurko/Android_app/blob/main/app/src/main/java/com/andreyyurko/firstapp/ui/emailconfirmation/EmailConfirmationViewModel.kt) you can find an implementation of a coroutine that awaits network response and emits state to flow. 
